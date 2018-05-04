@@ -1,0 +1,56 @@
+import time
+import pandas as pd
+import numpy as np
+
+CITY_DATA = { 'chicago': r'C:\Users\Eva\Documents\Udacity\Bikeshares Project\chicago.csv',
+              'new york city': r'C:\Users\Eva\Documents\Udacity\Bikeshares Project\new_york_city.csv',
+              'washington': r'C:\Users\Eva\Documents\Udacity\Bikeshares Project\washington.csv' }
+
+
+
+def get_filters():
+    """
+    Asks user to specify a city, month, and day to analyze.
+
+    Returns:
+        (str) city - name of the city to analyze
+        (str) month - name of the month to filter by, or "all" to apply no month filter
+        (str) day - name of the day of week to filter by, or "all" to apply no day filter
+    """
+    print('Hello! Let\'s explore some US bikeshare data!')
+    #get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+    city = ''
+    while True:
+        city = input("\nWhich city would you like to analyze?\n")
+        if city.strip() == 'chicago' or city.strip() == 'Chicago':
+            df = pd.read_csv(CITY_DATA['chicago'])
+            break
+        elif city.strip() == 'washington' or city.strip() == 'Washington':
+            df = pd.read_csv(CITY_DATA['washington'])
+            break
+        elif city.strip() == 'new york city' or city.strip() == 'New York City':
+            df = pd.read_csv(CITY_DATA['new york city'])
+            break
+        else:
+            print('Please pick a valid city: New York City, Chicago or Washington')
+    
+    df['Start Time'] = df['Start Time'] = pd.to_datetime(df['Start Time'])
+    df['month'] = df['Start Time'].dt.month
+    df['day'] = df['Start Time'].dt.weekday_name
+
+    month = ''
+    while True:
+        month = input("\nWhich month would you like to analyze?\n")
+        if month != 'all':
+            months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+            month = months.index(month) + 1
+            break
+    day = ''
+    while True:
+        day = str(input("\nwhich day would you like to analyze?\n"))
+        if day != 'all':
+            day = df[df['day'] == day.title()]
+            break
+                      
+get_filters()
+     
